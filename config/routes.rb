@@ -2,7 +2,9 @@ Rails.application.routes.draw do
 
   devise_for :users, controllers: { sessions: 'users/sessions' }
 
-  #root 'users#show'
+  resources :users, :only => [:show]
+
+  root 'users#show'
 
   #root 'users#show'
   # The priority is based upon order of creation: first created -> highest priority.
