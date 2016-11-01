@@ -1,11 +1,11 @@
 Rails.application.routes.draw do
 
 
-  devise_for :users, controllers: { sessions: 'users/sessions' }
+  devise_for :users
 
-  resources :users, :only => [:show] do
-    resources :wikis, :only => [:create, :update, :destroy]
-  end
+  resources :users, :only => [:show]
+
+  resources :wikis
 
   root 'users#show'
 

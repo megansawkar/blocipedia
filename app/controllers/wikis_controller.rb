@@ -1,19 +1,28 @@
 class WikisController < ApplicationController
 
+
   def create
     @wiki = Wiki.new(wiki_params)
     @wiki.user = current_user
 
     if @wiki.save
       flash[:notice] = "Wiki was saved successfully"
-      redirect_to [@wiki]
+      redirect_to @wiki
     else
       flash.now[:alert] = "There was an error saving the post. Please try again."
-      redirect_to root_path
+      render :new
     end
   end
 
   def show
+    @wiki = Wiki.find(params[:id])
+  end
+
+  def new
+    @wiki = Wiki.new
+  end
+
+  def edit
     @wiki = Wiki.find(params[:id])
   end
 
@@ -23,10 +32,10 @@ class WikisController < ApplicationController
 
     if @wiki.save
       flash[:notice] = "Wiki was updated successfully."
-      redirect_to root_path
+      redirect_to [@wiki]
     else
       flash.now[:alert] = "There was an error saving the wiki. Please try again."
-      redirect_to root path
+      render :edit
     end
   end
 
@@ -35,16 +44,25 @@ class WikisController < ApplicationController
 
     if @wiki.destroy
       flash[:notice] = "\"#{@wiki.title}\" was deleted successfully."
-      redirect_to root_path
+      render :index
     else
       flash.now[:alert] = "There was an error deleting the post."
-      redirect_to root_path
-    end 
+      render :show
+    end
   end
 
   private
 
   def wiki_params
     params.require(:wiki).permit(:title, :body, :private)
+  end
+
+  def authorize_user
+    wiki = Wiki.find(params[:id])
+
+    unless current_user == wiki.user
+      flash[:alert] = "You aren't authorized to do that."
+      redirect_to [wiki]
+    end
   end
 end
