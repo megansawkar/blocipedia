@@ -50,7 +50,7 @@ context "member user doing CRUD on a wiki they down" do
 
   describe "POST create" do
     it "increases the number of Wiki by 1" do
-      expect{post :create, wiki: {title: my_wiki.title, body: my_wiki.body} }.to change(Wiki,:count).by(1)
+      expect{ post :create, wiki: {title: 'Wiki title', body: 'Wiki body'} }.to change(Wiki,:count).by(1)
     end
 
     it "assigns the new wiki to @wiki" do
