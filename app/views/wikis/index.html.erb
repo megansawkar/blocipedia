@@ -1,7 +1,7 @@
 <h1>All Wikis</h1>
 <div class="row">
   <div class="col-md-8">
-    <% @wikis.each do |wiki| %>
+    <% policy_scope(Wiki).each do |wiki| %>
       <div class="media">
         <div class="media-body">
           <h4 class="media-heading">

@@ -4,6 +4,7 @@ require 'faker'
 5.times do
   user = User.create(
   email: Faker::Internet::email,
+  username: Faker::Lorem.word,
   password: Faker::Internet.password
   )
 end

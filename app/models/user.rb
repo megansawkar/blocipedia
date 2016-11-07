@@ -7,9 +7,25 @@ class User < ActiveRecord::Base
 
   has_many :wikis
 
+  after_initialize :init
+
   validates :username, :presence => true, :uniqueness => { :case_sensitive => false }
 
   attr_accessor :login
+
+  enum role: [:standard, :premium, :admin]
+
+  def admin?
+    role == 'admin'
+  end
+
+  def premium?
+    role == 'premium'
+  end
+
+  def standard?
+    role == 'standard'
+  end 
 
   def avatar_url(size)
     gravatar_id = Digest::MD5::hexdigest(self.email).downcase
@@ -23,6 +39,14 @@ class User < ActiveRecord::Base
     elsif conditions.has_key?(:username) || conditions.has_key?(:email)
       conditions[:email].downcase! if conditions[:email]
       where(conditions.to_h).first
+    end
+  end
+
+  private
+
+  def init
+    if self.new_record? && self.role.nil?
+      self.role = 'standard'
     end
   end
 end

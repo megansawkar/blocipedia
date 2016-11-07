@@ -7,7 +7,7 @@ RSpec.describe WikisController, type: :controller do
   let(:other_user) { create(:user) }
   let(:my_wiki) { create(:wiki, user: my_user) }
 
-context "member user doing CRUD on a wiki they down" do
+context "member user doing CRUD on a wiki they own" do
   before do
       @user = my_user
       sign_in @user
