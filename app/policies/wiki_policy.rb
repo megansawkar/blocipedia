@@ -8,10 +8,10 @@ class WikiPolicy < ApplicationPolicy
     end
 
     def resolve
-      if user.admin?
-        scope.all
+      if user.present?
+        @scope.all
       else
-        @scope.where(published: true)
+        @scope.where(private: false)
       end
     end
   end
@@ -22,7 +22,7 @@ class WikiPolicy < ApplicationPolicy
   end
 
   def index
-    true 
+    true
   end
 
   def create?
