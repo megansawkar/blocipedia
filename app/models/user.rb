@@ -25,7 +25,11 @@ class User < ActiveRecord::Base
 
   def standard?
     role == 'standard'
-  end 
+  end
+
+  def owner_of?(wiki)
+    wiki.user
+  end
 
   def avatar_url(size)
     gravatar_id = Digest::MD5::hexdigest(self.email).downcase

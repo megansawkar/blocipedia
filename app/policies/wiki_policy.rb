@@ -16,8 +16,32 @@ class WikiPolicy < ApplicationPolicy
     end
   end
 
+  def initialize(user, wiki)
+    @user = user
+    @wiki = wiki
+  end
+
+  def index
+    true 
+  end
+
+  def create?
+    user.present?
+  end
+
+  def update?
+    user.present?
+  end
+
+  def show?
+    true
+  end
+
+  def edit?
+    user.present?
+  end
 
   def destroy?
-    user.admin? || user.owner_of?(wiki)
+    user.admin? || user.owner_of?(@wiki)
   end
 end
