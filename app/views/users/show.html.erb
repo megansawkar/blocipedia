@@ -14,3 +14,9 @@
     </div>
   </div>
 </div>
+
+<h2>Wiki Form</h2>
+<%= render partial: 'wikis/form', locals: { user: @user, wiki: Wiki.new } %>
+
+<h2>Wikis</h2>
+<%= render @user.wikis %>
