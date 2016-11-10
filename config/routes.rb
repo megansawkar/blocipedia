@@ -7,6 +7,8 @@ Rails.application.routes.draw do
 
   resources :wikis
 
+  resources :charges, only: [:new, :create]
+
   root 'users#show'
 
   #root 'users#show'
