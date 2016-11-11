@@ -16,10 +16,10 @@ class WikiPolicy < ApplicationPolicy
     end
   end
 
-#  def initialize(user, wiki)
-#    @user = user
-#    @wiki = wiki
-#   end
+  def initialize(user, wiki)
+    @user = user
+    @wiki = wiki
+  end
 
   def index
     true

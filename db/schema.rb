@@ -14,8 +14,7 @@
 ActiveRecord::Schema.define(version: 20161110012317) do
 
   create_table "amounts", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer "default"
   end
 
   create_table "users", force: :cascade do |t|

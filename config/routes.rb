@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-
+  get 'charges/downgrade'
 
   devise_for :users
 
