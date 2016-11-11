@@ -8,7 +8,7 @@
             <%= link_to wiki.title, wiki %>
           </h4>
           <small>
-            Created <%= time_ago_in_words(wiki.created_at) %> ago by <%= wiki.user %><br/>
+            Created <%= time_ago_in_words(wiki.created_at) %> ago by <%= wiki.user.username %>
           </small>
         </div>
       </div>

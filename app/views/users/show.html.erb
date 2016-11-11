@@ -9,14 +9,17 @@
         </div>
       <% end %>
       <div class="media-body">
-        <h2 class="media-heading"><%= @user.email %></h2>
+        <h2 class="media-heading">Profile Information</h2>
+        <h4 class="media-heading">Your E-mail: <%= @user.email %></h2>
+        <h4 class="media-heading">Your Username: <%= @user.username %></h2>
+        <h4 class="media-heading">Membership Status: <%= @user.role %></h2>
       </div>
     </div>
   </div>
 </div>
 
-<h2>Wiki Form</h2>
+<h2>Create a New Wiki</h2>
 <%= render partial: 'wikis/form', locals: { user: @user, wiki: Wiki.new } %>
 
-<h2>Wikis</h2>
+<h2>Your Wikis</h2>
 <%= render @user.wikis %>
