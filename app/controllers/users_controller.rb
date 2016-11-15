@@ -5,8 +5,15 @@ class UsersController < ApplicationController
   end
 
   def downgrade
+    flash[:notice] = "You have successfully downgraded your account. Your Private Wikis will be made Public."
     current_user.update_attribute(:role, 'standard')
-    flash[:notice] = "We hope you enjoyed your Premium experience #{current_user.email}! If you'd like to provide feedback, please send a note to test@feedback.com."
-    redirect_to user_path(current_user)
+
+    wikis = Wiki.all
+    wikis.each do |wiki|
+      if wiki.private == true
+        wiki.update_attributes(private: false)
+      end
+    end
+    redirect_to wikis_path #user_path(current_user)
   end
 end

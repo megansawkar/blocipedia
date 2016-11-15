@@ -4,7 +4,7 @@ class WikisController < ApplicationController
   after_action :verify_policy_scoped, only: :index
 
   def index
-    @wikis = policy_scope(Wiki)
+    @wikis = policy_scope(Wiki).visible_to(current_user)
   end
 
   def show
@@ -19,7 +19,7 @@ class WikisController < ApplicationController
 
     if @wiki.save
       flash[:notice] = "Wiki was saved successfully"
-      redirect_to wikis_path 
+      redirect_to @wiki
     else
       flash.now[:alert] = "There was an error saving the Wiki. Please try again."
       render :new

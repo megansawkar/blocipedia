@@ -19,6 +19,7 @@
               <%= link_to "Upgrade Account", new_charge_path, class: 'btn btn-success' %>
             <#% else current_user.premium? || current_user.admin? %>
               <%= link_to "Downgrade Account", downgrade_path, class: 'btn btn-success' %>
+              <small>Standard Accounts have no Private Wikis. If you downgrade, your Private Wikis will be made Public.</small>
             <#% end %>
           </div >
         </h4>
