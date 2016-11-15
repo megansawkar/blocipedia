@@ -27,7 +27,7 @@ class User < ActiveRecord::Base
     role == 'standard'
   end
 
-  def owner_of?(wiki)
+  def owner_of(wiki)
     wiki.user
   end
 

@@ -4,7 +4,7 @@ class Wiki < ActiveRecord::Base
   validates :title, length: { minimum: 5 }, presence: true
   validates :body, length: { minimum: 5 }, presence: true
 
-  default_scope { order('updated_at ASC') }
+  default_scope { order('updated_at DESC') }
 
   scope :visible_to, -> (user) { user ? all : where(private: false) }
 end

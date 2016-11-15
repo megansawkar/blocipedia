@@ -42,6 +42,6 @@ class WikiPolicy < ApplicationPolicy
   end
 
   def destroy?
-    user.admin? || user.owner_of?(@wiki)
+    user.admin? || user.owner_of(@wiki)
   end
 end

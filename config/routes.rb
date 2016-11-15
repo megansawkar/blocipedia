@@ -1,11 +1,13 @@
 Rails.application.routes.draw do
-
+  get 'downgrade' => 'users#downgrade', :as => :downgrade
 
   devise_for :users
 
   resources :users, :only => [:show]
 
   resources :wikis
+
+  resources :charges, only: [:new, :create]
 
   root 'users#show'
 
