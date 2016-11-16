@@ -26,7 +26,7 @@ class WikiPolicy < ApplicationPolicy
   end
 
   def show?
-    user.present?    
+    true 
   end
 
   def create?

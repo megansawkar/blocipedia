@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
   has_many :wikis
 
   after_initialize :init
+  after_update :downgrade_wikis 
 
   validates :username, :presence => true, :uniqueness => { :case_sensitive => false }
 
@@ -52,5 +53,10 @@ class User < ActiveRecord::Base
     if self.new_record? && self.role.nil?
       self.role = 'standard'
     end
+  end
+
+  def downgrade_wikis
+    return unless self.role_changed?(from: 'premium', to: 'standard')
+    wikis.update_all private: false
   end
 end

@@ -15,12 +15,11 @@
         <h4 class="media-heading">Membership Status: <%= @user.role %></h4>
         <h4 class="media-heading">
           <div class="col-md-4">
-            <%= user_signed_in? && current_user.standard? %>
+            <% if user_signed_in? && current_user.standard? %>
               <%= link_to "Upgrade Account", new_charge_path, class: 'btn btn-success' %>
-            <#% else current_user.premium? || current_user.admin? %>
-              <%= link_to "Downgrade Account", downgrade_path, class: 'btn btn-success' %>
-              <small>Standard Accounts have no Private Wikis. If you downgrade, your Private Wikis will be made Public.</small>
-            <#% end %>
+            <% else user_signed_in? && current_user.premium? %>
+              <%= link_to "Downgrade Account", downgrade_path, class: 'btn btn-success', data: {confirm: 'Standard Accounts have no Private Wikis. If you downgrade, your Private Wikis will be made Public.'} %>
+            <% end %>
           </div >
         </h4>
       </div>
