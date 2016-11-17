@@ -3,6 +3,12 @@ require 'rails_helper'
 RSpec.describe User, type: :model do
   let(:user) { create(:user) }
 
+#  describe "GET downgrade" do
+#    it "#downgrades a user role from premium to standard" do
+#      expect(user).to have_attributes(:role => 'standard')
+#    end
+#  end
+
   it "responds to role" do
     expect(user).to respond_to(:role)
   end

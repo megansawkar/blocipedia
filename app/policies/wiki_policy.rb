@@ -1,7 +1,5 @@
 class WikiPolicy < ApplicationPolicy
-  class Scope
-    attr_reader :user, :wiki
-
+  class Scope < WikiPolicy
     def initialize(user, scope)
       @user = user
       @scope = scope
@@ -16,6 +14,8 @@ class WikiPolicy < ApplicationPolicy
     end
   end
 
+  attr_reader :user, :wiki
+
   def initialize(user, wiki)
     @user = user
     @wiki = wiki
@@ -25,16 +25,16 @@ class WikiPolicy < ApplicationPolicy
     true
   end
 
+  def show?
+    true 
+  end
+
   def create?
     user.present?
   end
 
   def update?
     user.present?
-  end
-
-  def show?
-    true
   end
 
   def edit?
