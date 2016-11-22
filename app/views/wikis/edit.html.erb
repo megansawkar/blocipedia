@@ -9,5 +9,6 @@
   </div>
   <div class="col-md-8">
     <%= render partial: 'form', locals: { wiki: @wiki } %>
+    <%= render "collaborations/form", wiki_collaborations_path(@wiki) %>
   </div>
 </div>

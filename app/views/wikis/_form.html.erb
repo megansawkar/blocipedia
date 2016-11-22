@@ -20,6 +20,7 @@
     </div>
     <div class="form-group">
       <%= f.submit "Save", class: 'btn btn-success' %>
+      <#%= link_to "Add/Delete Collaborator", wiki_collaborations_path(@wiki), class: 'btn btn-primary' %>
     </div>
     <% if current_user.admin? || current_user.premium? %>
       <div class="form-group">
@@ -27,6 +28,12 @@
         <%= f.check_box :private %> Private wiki
         <% end %>
       </div>
+      <h2>Collaborators</h2>
+      <%= @wiki.collaborated_users.each do |collaborator| %>
+        <p class="media-heading">
+          <%= collaboration.email %>
+        </p>
+      <% end %>
     <% end %>
   <% end %>
 <% end %>

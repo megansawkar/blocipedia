@@ -13,6 +13,7 @@
   <div class="col-md-8">
     <p><%= markdown(@wiki.body) %></p>
   <div class="col-md-4">
+    <%= render "collaborations/form", wiki_collaborations_path(@wiki) %>
     <%= link_to "Edit", edit_wiki_path(@wiki), class: 'btn btn-success' %>
     <%= link_to "Delete Wiki", [@wiki], method: :delete, class: 'btn btn-danger', data: {confirm: 'Are you sure you want to delete this post?'} %>
   </div>
