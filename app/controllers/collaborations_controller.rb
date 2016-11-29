@@ -22,6 +22,7 @@ class CollaborationsController < ApplicationController
       redirect_to @wiki
     else
       flash[:error] = "There was an error deleting the collaborator. Please try again."
-    end 
+    end
   end
+
 end

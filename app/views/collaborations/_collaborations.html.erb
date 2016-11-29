@@ -1,0 +1,12 @@
+<h2>Collaborators</h2>
+<table class="table">
+  <% @users.each do |user| %>
+    <tr>
+        <td><%= user.username %></td>
+        <td><% if @wiki.is_collaboration?(user) %>
+          <% collaboration = @wiki.collaboration_for(user) %>
+          <%= link_to "Remove Collaborator", [@wiki, collaboration], method: :delete, class: "btn btn-danger" %>
+          <% end %></td>
+    </tr>
+  <% end %>
+</table>

@@ -13,9 +13,12 @@
   <div class="col-md-8">
     <p><%= markdown(@wiki.body) %></p>
   <div class="col-md-4">
-    <%= render partial: "collaborations/form", locals: {wiki: @wiki, user: @user} %>
     <%= link_to "Edit", edit_wiki_path(@wiki), class: 'btn btn-success' %>
     <%= link_to "Delete Wiki", [@wiki], method: :delete, class: 'btn btn-danger', data: {confirm: 'Are you sure you want to delete this post?'} %>
   </div>
   </div>
-</div>
+
+  <% if @wiki.private %>
+    <%= render partial: "collaborations/form", locals: {wiki: @wiki, user: @user} %>
+    <%= render partial: 'form', locals: { wiki: @wiki } %>
+  <% end %>
