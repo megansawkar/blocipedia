@@ -1,21 +1,28 @@
 class CollaborationsController < ApplicationController
   def create
     @wiki = Wiki.find(params[:wiki_id])
-    @collaboration = Collaboration.new(user_id: params[:user_id], wiki_id: params[:wiki_id])
+    @user = User.find_by_username(params[:search])
 
-    if @collaboration.save
-        flash[:notice] = "Collaborator successfully added to Wiki."
-        redirect_to @wiki
+    if @user
+      @collaboration = Collaboration.new(wiki_id: params[:wiki_id], user_id: @user.id)
+
+      if @collaboration.save
+          flash[:notice] = "Collaborator successfully added to Wiki."
+          redirect_to @wiki
+      else
+            flash[:error] = "There was a problem adding the collaborator. Please try again."
+            render :show
+      end
     else
-        flash[:error] = "There was a problem adding the collaborator. Please try again."
-        render :new
+      flash[:error] = "The username is invalid. Please try again."
+      render :show 
     end
   end
 
 
   def destroy
-    @wiki = Wiki.find(params[:wiki_id])
-    @collaboration = Collaboration.new(user_id: params[:user_id], wiki_id: params[:wiki_id])
+  #  @wiki = Wiki.find(params[:wiki_id])
+    @collaboration = Collaboration.find(params[:id])
 
     if @collaboration.destroy
       flash[:notice] = "Collaborator removed from wiki."
@@ -24,5 +31,7 @@ class CollaborationsController < ApplicationController
       flash[:error] = "There was an error deleting the collaborator. Please try again."
     end
   end
+
+
 
 end

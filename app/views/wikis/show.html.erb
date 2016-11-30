@@ -20,5 +20,10 @@
 
   <% if @wiki.private %>
     <%= render partial: "collaborations/form", locals: {wiki: @wiki, user: @user} %>
-    <%= render partial: 'form', locals: { wiki: @wiki } %>
+  <% end %>
+
+  <% if @wiki.private %>
+    <% if Collaboration.exists?(wiki_id: @wiki) %>
+    <%= render partial: 'collaborations/collaborations', locals: { wiki: @wiki } %>
+    <% end %>
   <% end %>

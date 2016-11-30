@@ -31,11 +31,6 @@
         <% end %>
       </div>
 
-      <% if @wiki.private %>
-        <% if Collaboration.exists?(wiki_id: @wiki) %>
-        <%= render partial: 'collaborations/collaborations', locals: { user: @user, wiki: @wiki } %>
-        <% end %>
-      <% end %>
     <% end %>
   <% end %>
 <% end %>

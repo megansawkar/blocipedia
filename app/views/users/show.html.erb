@@ -32,3 +32,17 @@
 
 <h2>Your Wikis</h2>
 <%= render @user.wikis %>
+
+<h2>Private Collaborations</h2>
+<% if @wiki.private && @wiki.is_collaboration?(user) %>
+<#%= render @user.wikis.collaborations %>
+  <% @wiki.collaborations.each do |collaboration| %>
+    <tr>
+        <td><%= wiki.title %></td>
+        <td><% if @wiki.is_collaboration?(user) %>
+          <% collaboration = @wiki.collaboration_for(user) %>
+          <%= link_to "Remove Collaborator", [@wiki, collaboration], method: :delete, class: "btn btn-danger" %>
+          <% end %></td>
+    </tr>
+  <% end %>
+<% end %>
