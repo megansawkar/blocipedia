@@ -43,11 +43,11 @@ class WikiPolicy < ApplicationPolicy
   end
 
   def show?
-    !wiki.private? || user.present? && (wiki.user == user || user.admin? || user.premium? || wiki.users.include?(user))
+    wiki_show?
   end
 
   def create?
-    !wiki.private? && (user.present?) || wiki.private? && (user.admin? || user.premium?)
+    wiki_create?
   end
 
   def update?
@@ -55,10 +55,40 @@ class WikiPolicy < ApplicationPolicy
   end
 
   def edit?
-    !wiki.private? && (user.present?) || wiki.private? && (user.admin? || wiki.user || wiki.users.include?(user))
+    wiki_edit?
   end
 
   def destroy?
-    !wiki.private? && (user.admin? || wiki.user) || wiki.private? && (user.admin? || wiki.user) 
+    wiki_destroy?
+  end
+
+  private
+
+  def wiki_show?
+    wiki.private == false ||
+    user.owner_of_wiki?(user) ||
+    user.admin? ||
+    user.premium? ||
+    wiki.users.include?(user)
+  end
+
+  def wiki_create?
+    wiki.private == false && user.present? ||
+    wiki.private == true && user.admin? ||
+    user.premium?
+  end
+
+  def wiki_edit?
+    wiki.private == false && user.present? ||
+    wiki.private == true && user.owner_of_wiki?(user) ||
+    user.admin? ||
+    user.is_collaboration?
+  end
+
+  def wiki_destroy?
+    wiki.private == false && user.owner_of_wiki? ||
+    wiki.private == false && user.admin? ||
+    wiki.private == true && user.owner_of_wiki?(user) ||
+    wiki.private == true && user.admin?
   end
 end
