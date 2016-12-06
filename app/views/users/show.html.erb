@@ -30,11 +30,13 @@
 <h2>Create a New Wiki</h2>
 <%= render partial: 'wikis/form', locals: { user: @user, wiki: Wiki.new } %>
 
+<% if current_user.wikis.exists? %>
 <h2>Your Wikis</h2>
 <%= render @user.wikis %>
+<% end %>
 
-<h2>Private Collaborations</h2>
 <% if current_user.collaborations.exists? %>
+<h2>Private Collaborations</h2>
   <% @user.collaborations.each do |collaboration| %>
     <tr>
         <td><%= link_to collaboration.wiki.title, collaboration.wiki %></td>

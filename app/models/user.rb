@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
 
 
   has_many :wikis, dependent: :destroy
-  has_many :collaborations, dependent: :destroy 
+  has_many :collaborations, dependent: :destroy
 
   after_initialize :init
   after_update :downgrade_wikis
@@ -29,8 +29,8 @@ class User < ActiveRecord::Base
     role == 'standard'
   end
 
-  def owner_of(wiki)
-    wiki.user
+  def owner_of_wiki?
+    wiki.user?
   end
 
   def avatar_url(size)

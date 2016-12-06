@@ -1,19 +1,4 @@
 class WikiPolicy < ApplicationPolicy
-#  class Scope
-#    def initialize(user, scope)
-#      @user = user
-#      @scope = scope
-#    end
-
-#    def resolve
-#      if user.present?
-#        @scope.all
-#      else
-#        @scope.where(private: false)
-#      end
-#    end
-#  end
-
   class Scope
     attr_reader :user, :scope
 
@@ -58,11 +43,11 @@ class WikiPolicy < ApplicationPolicy
   end
 
   def show?
-    true
+    !wiki.private? || user.present? && (wiki.user == user || user.admin? || user.premium? || wiki.users.include?(user))
   end
 
   def create?
-    user.present?
+    !wiki.private? && (user.present?) || wiki.private? && (user.admin? || user.premium?)
   end
 
   def update?
@@ -70,10 +55,10 @@ class WikiPolicy < ApplicationPolicy
   end
 
   def edit?
-    user.present?
+    !wiki.private? && (user.present?) || wiki.private? && (user.admin? || wiki.user || wiki.users.include?(user))
   end
 
   def destroy?
-    user.admin? || user.owner_of(@wiki)
+    !wiki.private? && (user.admin? || wiki.user) || wiki.private? && (user.admin? || wiki.user) 
   end
 end
