@@ -82,7 +82,7 @@ class WikiPolicy < ApplicationPolicy
     wiki.private == false && user.present? ||
     wiki.private == true && user.owner_of_wiki?(user) ||
     user.admin? ||
-    user.is_collaboration?
+    wiki.users.include?(user)
   end
 
   def wiki_destroy?

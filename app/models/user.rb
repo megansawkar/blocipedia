@@ -30,11 +30,7 @@ class User < ActiveRecord::Base
   end
 
   def owner_of_wiki?(owner)
-    owner == current_user
-  end
-
-  def is_collaboration?
-    wiki.users.include?(user)
+    owner == @user
   end
 
   def avatar_url(size)
