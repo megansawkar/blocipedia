@@ -29,8 +29,8 @@ class User < ActiveRecord::Base
     role == 'standard'
   end
 
-  def owner_of_wiki?(owner)
-    owner == @user
+  def owner_of_wiki?(wiki)
+    wiki.user == self
   end
 
   def avatar_url(size)

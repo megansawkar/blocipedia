@@ -13,8 +13,10 @@
   <div class="col-md-8">
     <p><%= markdown(@wiki.body) %></p>
   <div class="col-md-4">
+    <% if policy(@wiki).edit? %>
     <%= link_to "Edit", edit_wiki_path(@wiki), class: 'btn btn-success' %>
-    <% if current_user.id == @wiki.user_id || current_user.admin? %>
+    <% end %>
+    <% if policy(@wiki).destroy? %>
     <%= link_to "Delete Wiki", [@wiki], method: :delete, class: 'btn btn-danger', data: {confirm: 'Are you sure you want to delete this post?'} %>
     <% end %>
   </div>
