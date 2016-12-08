@@ -1,13 +1,17 @@
 class CollaborationPolicy < ApplicationPolicy
-
   attr_reader :user, :wiki
 
+  def initialize(user, wiki)
+    @user = user
+    @wiki = wiki
+  end
+
   def create?
-    current_user.id == wiki.user_id || current_user.admin?
+    collaboration_show?
   end
 
   def destroy?
-    current_user.owner_of(@wiki) || current_user.admin?
+    collaboration_show?
   end
 
   class Scope < Scope
@@ -21,5 +25,12 @@ class CollaborationPolicy < ApplicationPolicy
     def resolve
       scope
     end
+  end
+
+  private
+
+  def collaboration_show?
+    user.id == wiki.user_id || user.admin?
+    #user.owner_of_wiki?(wiki) || user.admin?
   end
 end

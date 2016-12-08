@@ -1,4 +1,35 @@
 class WikiPolicy < ApplicationPolicy
+  attr_reader :user, :wiki
+
+  def initialize(user, wiki)
+    @user = user
+    @wiki = wiki
+  end
+
+  def index
+    wiki_show?
+  end
+
+  def show?
+    wiki_show?
+  end
+
+  def create?
+    user.present?
+  end
+
+  def update?
+    user.present? && wiki_show?
+  end
+
+  def edit?
+    user.present? && wiki_show?
+  end
+
+  def destroy?
+    user.present? && (user.admin? || user.owner_of_wiki?(wiki))
+  end
+
   class Scope
     attr_reader :user, :scope
 
@@ -31,36 +62,6 @@ class WikiPolicy < ApplicationPolicy
     end
   end
 
-  attr_reader :user, :wiki
-
-  def initialize(user, wiki)
-    @user = user
-    @wiki = wiki
-  end
-
-  def index
-    wiki_show?
-  end
-
-  def show?
-    wiki_show?
-  end
-
-  def create?
-    user.present?
-  end
-
-  def update?
-    user.present? && wiki_show?
-  end
-
-  def edit?
-    user.present? && wiki_show?
-  end
-
-  def destroy?
-    user.present? && (user.admin? || user.owner_of_wiki?(wiki))
-  end
 
   private
 
@@ -70,24 +71,4 @@ class WikiPolicy < ApplicationPolicy
     user.admin? ||
     wiki.users.include?(user)
   end
-
-#  def wiki_create?
-#    (wiki.private == false && user.present?) ||
-#    (wiki.private == true && user.admin? ||
-#    user.premium?)
-#  end
-
-#  def wiki_edit?
-#    wiki.private == false && user.present? ||
-#    wiki.private == true && user.owner_of_wiki?(wiki) ||
-#    user.admin? ||
-#    wiki.users.include?(user)
-#  end
-
-#  def wiki_destroy?
-#    wiki.private == false && user.owner_of_wiki?(wiki) ||
-#    wiki.private == false && user.admin? ||
-#    wiki.private == true && user.owner_of_wiki?(wiki) ||
-#    wiki.private == true && user.admin?
-#  end
 end
