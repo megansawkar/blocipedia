@@ -2,14 +2,14 @@ class CollaborationsController < ApplicationController
   include Pundit
 
   before_action :authenticate_user!
-  
+
   def create
     @wiki = Wiki.find(params[:wiki_id])
     @user = User.find_by_username(params[:search])
-    authorize @collaboration
 
     if @user
       @collaboration = Collaboration.new(wiki_id: params[:wiki_id], user_id: @user.id)
+      authorize @collaboration
 
       if @collaboration.save
           flash[:notice] = "Collaborator successfully added to Wiki."
