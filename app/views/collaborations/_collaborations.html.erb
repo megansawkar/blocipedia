@@ -5,7 +5,7 @@
   <% @wiki.collaborations.each do |collaboration| %>
     <tr>
         <td><%= collaboration.user.username %></td>
-        <% if policy(@collaboration).destroy? %>
+        <% if policy(collaboration).destroy? %>
           <%= link_to "Remove Collaborator", [wiki, collaboration], method: :delete, data: { confirm: 'Are you sure you want to remove this collaborator?' }, class: "btn btn-danger" %>
         <% end %>
     </tr>
