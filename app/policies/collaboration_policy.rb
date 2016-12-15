@@ -7,11 +7,11 @@ class CollaborationPolicy < ApplicationPolicy
   end
 
   def create?
-    collaboration_show?
+    collaboration_create?
   end
 
   def destroy?
-    collaboration_show?
+    collaboration_destroy?
   end
 
   class Scope < Scope
@@ -29,7 +29,11 @@ class CollaborationPolicy < ApplicationPolicy
 
   private
 
-  def collaboration_show?
+  def collaboration_create?
+    user.admin? || user.owner_of_wiki?(wiki.wiki)
+  end
+
+  def collaboration_destroy?
     user.present? && (user.admin? || user.owner_of_wiki?(wiki.wiki))
     #user.id == wiki.user_id || user.admin?
     #user.owner_of_wiki?(wiki) || user.admin?

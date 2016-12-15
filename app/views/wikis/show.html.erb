@@ -22,7 +22,10 @@
   </div>
   </div>
 
+
+  <% if @wiki.private? && (current_user.admin? || current_user.owner_of_wiki?(@wiki)) %>
     <%= render partial: "collaborations/form", locals: {wiki: @wiki, user: @user} %>
+  <% end %>
 
 
 

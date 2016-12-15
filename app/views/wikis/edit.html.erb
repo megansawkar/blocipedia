@@ -9,9 +9,9 @@
   </div>
   <div class="col-md-8">
     <%= render partial: 'form', locals: { wiki: @wiki } %>
-      <#% if policy(@wiki).destroy? %>
-      <%= render partial: "collaborations/form", locals: {wiki: @wiki, user: @user} %>
-    <#% end %>
+      <% if @wiki.private? && (current_user.admin? || current_user.owner_of_wiki?(@wiki)) %>
+        <%= render partial: "collaborations/form", locals: {wiki: @wiki, user: @user} %>
+      <% end %>
 
     <% if @wiki.private %>
       <% if Collaboration.exists?(wiki_id: @wiki) %>
