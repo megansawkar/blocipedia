@@ -23,10 +23,10 @@ RSpec.describe User, type: :model do
     expect(user).to respond_to(:standard?)
   end
 
-describe "roles" do
-  it "is standard by default" do
-    expect(user.role).to eq("standard")
-  end
+  describe "roles" do
+    it "is standard by default" do
+      expect(user.role).to eq("standard")
+    end
 
   context "standard user" do
     it "returns true for #standard?" do
@@ -79,10 +79,9 @@ describe "roles" do
   end
 end
 
-describe "downgrade wikis" do
-  it "makes user.wikis public when user.role is updated" do
-    expect(user.wikis).not_to be(private)
+  describe "downgrade wikis" do
+    it "makes user.wikis public when user.role is updated" do
+      expect(user.wikis).not_to be(private)
+    end
   end
-end
-
 end

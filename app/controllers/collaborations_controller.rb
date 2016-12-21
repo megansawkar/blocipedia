@@ -5,7 +5,7 @@ class CollaborationsController < ApplicationController
 
   def create
     @wiki = Wiki.find(params[:wiki_id])
-    @user = User.find_by_username(params[:search])
+    @user = User.find_by(username: params[:search])
 
     if @user
       @collaboration = Collaboration.new(wiki_id: params[:wiki_id], user_id: @user.id)
@@ -24,9 +24,8 @@ class CollaborationsController < ApplicationController
     end
   end
 
-
   def destroy
-  #  @wiki = Wiki.find(params[:wiki_id])
+    #  @wiki = Wiki.find(params[:wiki_id])
     @collaboration = Collaboration.find(params[:id])
     authorize @collaboration
 
@@ -37,7 +36,4 @@ class CollaborationsController < ApplicationController
       flash[:error] = "There was an error deleting the collaborator. Please try again."
     end
   end
-
-
-
 end

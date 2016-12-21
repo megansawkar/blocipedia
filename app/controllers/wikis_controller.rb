@@ -3,8 +3,8 @@ class WikisController < ApplicationController
 
   before_action :authenticate_user!, except: [:index, :show]
 
-#  after_action :verify_authorized, except: :index
-#  after_action :verify_policy_scoped, only: :index
+  #  after_action :verify_authorized, except: :index
+  #  after_action :verify_policy_scoped, only: :index
 
   def index
     @wikis = policy_scope(Wiki)#.visible_to(current_user)
@@ -39,8 +39,8 @@ class WikisController < ApplicationController
   def edit
     @user = current_user
     @users = User.all
-      @wiki = Wiki.find(params[:id])
-      authorize @wiki
+    @wiki = Wiki.find(params[:id])
+    authorize @wiki
   end
 
   def update
@@ -60,7 +60,7 @@ class WikisController < ApplicationController
   def destroy
     @wiki = Wiki.find(params[:id])
     authorize @wiki
-    title = @wiki.title
+    # title = @wiki.title
 
     if @wiki.destroy
       flash[:notice] = "\"#{@wiki.title}\" was deleted successfully."
