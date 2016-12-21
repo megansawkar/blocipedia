@@ -5,10 +5,11 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable, :confirmable
 
 
-  has_many :wikis
+  has_many :wikis, dependent: :destroy
+  has_many :collaborations, dependent: :destroy
 
   after_initialize :init
-  after_update :downgrade_wikis 
+  after_update :downgrade_wikis
 
   validates :username, :presence => true, :uniqueness => { :case_sensitive => false }
 
@@ -28,8 +29,8 @@ class User < ActiveRecord::Base
     role == 'standard'
   end
 
-  def owner_of(wiki)
-    wiki.user
+  def owner_of_wiki?(wiki)
+    wiki.user == self
   end
 
   def avatar_url(size)

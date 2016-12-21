@@ -3,11 +3,9 @@ require 'rails_helper'
 RSpec.describe User, type: :model do
   let(:user) { create(:user) }
 
-#  describe "GET downgrade" do
-#    it "#downgrades a user role from premium to standard" do
-#      expect(user).to have_attributes(:role => 'standard')
-#    end
-#  end
+  it { is_expected.to have_many(:wikis) }
+  it { is_expected.to have_many(:collaborations) }
+  it { is_expected.to have_many(:shared_wikis) }
 
   it "responds to role" do
     expect(user).to respond_to(:role)
@@ -80,4 +78,11 @@ describe "roles" do
     end
   end
 end
+
+describe "downgrade wikis" do
+  it "makes user.wikis public when user.role is updated" do
+    expect(user.wikis).not_to be(private)
+  end
+end
+
 end

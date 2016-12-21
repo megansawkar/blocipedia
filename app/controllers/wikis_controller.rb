@@ -7,11 +7,13 @@ class WikisController < ApplicationController
 #  after_action :verify_policy_scoped, only: :index
 
   def index
-    @wikis = policy_scope(Wiki).visible_to(current_user)
+    @wikis = policy_scope(Wiki)#.visible_to(current_user)
+    authorize @wiki
   end
 
   def show
     @wiki = Wiki.find(params[:id])
+    @user = current_user
     authorize @wiki
   end
 

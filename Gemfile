@@ -26,6 +26,7 @@ group :development, :test do
   gem 'shoulda'
   gem 'faker'
   gem 'factory_girl_rails', '~> 4.0'
+  gem 'pry-rails'
 end
 
 
@@ -62,3 +63,5 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'devise'
 gem 'pundit'
 gem 'stripe'
+gem 'redcarpet', '~> 3.0.0'
+gem 'coderay'

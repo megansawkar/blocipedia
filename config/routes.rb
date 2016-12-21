@@ -1,11 +1,17 @@
 Rails.application.routes.draw do
+#  get 'collaborations/create'
+
+#  get 'collaborations/destroy'
+
   get 'downgrade' => 'users#downgrade', :as => :downgrade
 
   devise_for :users
 
   resources :users, :only => [:show]
 
-  resources :wikis
+  resources :wikis do
+    resources :collaborations, only: [:create, :destroy]
+  end
 
   resources :charges, only: [:new, :create]
 
