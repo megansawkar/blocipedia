@@ -15,8 +15,8 @@ class Wiki < ActiveRecord::Base
   private
 
   def delete_collaborations
-    return unless self.private == false
+    return unless private == false
 
-    self.collaborations.delete_all
+    collaborations.delete_all
   end
 end

@@ -7,9 +7,10 @@ module ApplicationHelper
     end
   end
 
-  def markdown(text)
+  def markdown(text) # rubocop:disable MethodLength
     coderayified = CodeRayify.new(filter_html: true,
                                   hard_wrap: true)
+
     options = {
       no_intra_emphasis: true,
       fenced_code_blocks: true,
@@ -18,9 +19,10 @@ module ApplicationHelper
       strikethrough: true,
       underline: true,
       highlight: true,
-      quote: true,
+      quote: true
     }
+
     markdown_to_html = Redcarpet::Markdown.new(coderayified, options)
-    markdown_to_html.render(text).safe_join
+    markdown_to_html.render(text).html_safe # rubocop:disable OutputSafety
   end
 end

@@ -5,7 +5,6 @@ RSpec.describe User, type: :model do
 
   it { is_expected.to have_many(:wikis) }
   it { is_expected.to have_many(:collaborations) }
-  it { is_expected.to have_many(:shared_wikis) }
 
   it "responds to role" do
     expect(user).to respond_to(:role)
@@ -28,60 +27,60 @@ RSpec.describe User, type: :model do
       expect(user.role).to eq("standard")
     end
 
-  context "standard user" do
-    it "returns true for #standard?" do
-      expect(user.standard?).to be_truthy
+    context "standard user" do
+      it "returns true for #standard?" do
+        expect(user.standard?).to be_truthy
+      end
+
+      it "returns false for #admin?" do
+        expect(user.admin?).to be_falsey
+      end
+
+      it "returns false for #premium" do
+        expect(user.premium?).to be_falsey
+      end
     end
 
-    it "returns false for #admin?" do
-      expect(user.admin?).to be_falsey
+    context "admin user" do
+      before do
+        user.admin!
+      end
+
+      it "returns false for #standard?" do
+        expect(user.standard?).to be_falsey
+      end
+
+      it "returns false for #premium?" do
+        expect(user.premium?).to be_falsey
+      end
+
+      it "returns true for #admin?" do
+        expect(user.admin?).to be_truthy
+      end
     end
 
-    it "returns false for #premium" do
-      expect(user.premium?).to be_falsey
+    context "premium user" do
+      before do
+        user.premium!
+      end
+
+      it "returns false for #standard?" do
+        expect(user.standard?).to be_falsey
+      end
+
+      it "returns true for #premium?" do
+        expect(user.premium?).to be_truthy
+      end
+
+      it "returns false for #admin?" do
+        expect(user.admin?).to be_falsey
+      end
     end
   end
-
-  context "admin user" do
-    before do
-      user.admin!
-    end
-
-    it "returns false for #standard?" do
-      expect(user.standard?).to be_falsey
-    end
-
-    it "returns false for #premium?" do
-      expect(user.premium?).to be_falsey
-    end
-
-    it "returns true for #admin?" do
-      expect(user.admin?).to be_truthy
-    end
-  end
-
-  context "premium user" do
-    before do
-      user.premium!
-    end
-
-    it "returns false for #standard?" do
-      expect(user.standard?).to be_falsey
-    end
-
-    it "returns true for #premium?" do
-      expect(user.premium?).to be_truthy
-    end
-
-    it "returns false for #admin?" do
-      expect(user.admin?).to be_falsey
-    end
-  end
-end
 
   describe "downgrade wikis" do
     it "makes user.wikis public when user.role is updated" do
-      expect(user.wikis).not_to be(private)
+      expect(user.wikis).not_to be(private: true)
     end
   end
 end

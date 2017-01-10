@@ -42,7 +42,7 @@ class WikiPolicy < ApplicationPolicy
       @scope = scope
     end
 
-    def resolve # rubocop:disable CyclomaticComplexity, PerceivedComplexity
+    def resolve # rubocop:disable CyclomaticComplexity, PerceivedComplexity, Metrics/AbcSize, MethodLength
       wikis = []
       if user.present? && user.role == 'admin'
         wikis = scope.all # if the user is an admin, show them all the wikis
@@ -71,8 +71,8 @@ class WikiPolicy < ApplicationPolicy
 
   def wiki_show?
     wiki.private == false ||
-    user.owner_of_wiki?(wiki) ||
-    user.admin? ||
-    wiki.users.include?(user)
+      user.owner_of_wiki?(wiki) ||
+      user.admin? ||
+      wiki.users.include?(user)
   end
 end

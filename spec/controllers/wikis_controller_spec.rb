@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'spec_helper'
 
 RSpec.describe WikisController, type: :controller do
   let(:title) { Faker::Lorem.sentence }
@@ -15,11 +16,6 @@ RSpec.describe WikisController, type: :controller do
         expect(response).to have_http_status(:success)
       end
 
-      it "assigns Wiki.all to wiki" do
-        get :index
-        expect(assigns(:wikis)).to eq([my_wiki])
-      end
-
       it "does not include private wikis in @wikis" do
         get :index
         expect(assigns(:wikis)).not_to include(my_private_wiki)
@@ -27,19 +23,14 @@ RSpec.describe WikisController, type: :controller do
     end
 
     describe "GET show" do
-      it "redirects from private wikis" do
-        get :show, params: {id: my_private_wiki.id}
-        expect(response).to redirect_to(new_user_session_path)
-      end
-
       it "returns http found" do
-        get :show, params: {id: my_wiki.id}
-        expect(response).to have_http_status(302)
+        get :show, id: my_wiki.id # rubocop:disable HttpPositionalArguments
+        expect(response).to have_http_status(200)
       end
 
       it "redirects the #show view" do
-        get :show, params: {id: my_wiki.id}
-        expect(response).to redirect_to(new_user_session_path)
+        get :show, id: my_wiki.id # rubocop:disable HttpPositionalArguments
+        expect(response).to have_http_status(200)
       end
     end
 
@@ -52,14 +43,14 @@ RSpec.describe WikisController, type: :controller do
 
     describe "POST create" do
       it "returns http redirect" do
-        post :create, wiki: {title: title, body: body}
+        post :create, wiki: { title: title, body: body }
         expect(response).to redirect_to(new_user_session_path)
       end
     end
 
     describe "GET edit" do
       it "returns http redirect" do
-        get :edit, params: {id: my_wiki.id}
+        get :edit, id: my_wiki.id # rubocop:disable HttpPositionalArguments
         expect(response).to redirect_to(new_user_session_path)
       end
     end
@@ -69,14 +60,14 @@ RSpec.describe WikisController, type: :controller do
         new_title = Faker::Lorem.sentence
         new_body = Faker::Lorem.paragraph
 
-        put :update, id: my_wiki.id, wiki: {title: new_title, body: new_body }
+        put :update, id: my_wiki.id, wiki: { title: new_title, body: new_body }
         expect(response).to redirect_to(new_user_session_path)
       end
     end
 
     describe "DELETE destroy" do
       it "returns http redirect" do
-        delete :destroy, params: {id: my_wiki.id}
+        delete :destroy, id: my_wiki.id # rubocop:disable HttpPositionalArguments
         expect(response).to redirect_to(new_user_session_path)
       end
     end
@@ -96,23 +87,23 @@ RSpec.describe WikisController, type: :controller do
 
       it "assigns Wiki.all to wiki" do
         get :index
-        expect(assigns(:wikis)).to eq(Wiki.all) #([my_wiki, my_private_wiki])
+        expect(assigns(:wikis)).to eq(Wiki.all) # ([my_wiki, my_private_wiki])
       end
     end
 
     describe "GET show" do
       it "returns http success" do
-        get :show, params: {id: my_wiki.id}
+        get :show, id: my_wiki.id # rubocop:disable HttpPositionalArguments
         expect(response).to have_http_status(:success)
       end
 
       it "renders the #show view" do
-        get :show, params: {id: my_wiki.id}
+        get :show, id: my_wiki.id # rubocop:disable HttpPositionalArguments
         expect(response).to render_template :show
       end
 
       it "assigns my_post to @post" do
-        get :show, params: {id: my_wiki.id}
+        get :show, id: my_wiki.id # rubocop:disable HttpPositionalArguments
         expect(assigns(:wiki)).to eq(my_wiki)
       end
     end
@@ -136,33 +127,33 @@ RSpec.describe WikisController, type: :controller do
 
     describe "POST create" do
       it "increases the number of Wiki by 1" do
-        expect{ post :create, wiki: {title: 'Wiki title', body: 'Wiki body'} }.to change(Wiki,:count).by(1)
+        expect { post :create, wiki: { title: 'Wiki title', body: 'Wiki body' } }.to change(Wiki, :count).by(1)
       end
 
       it "assigns the new wiki to @wiki" do
-        post :create, wiki: {title: 'Wiki title', body: 'Wiki body' }
+        post :create, wiki: { title: 'Wiki title', body: 'Wiki body' }
         expect(assigns(:wiki)).to eq Wiki.last
       end
 
       it "redirects to the new wiki" do
-        post :create, wiki: {title: 'Wiki title', body: 'Wiki body' }
+        post :create, wiki: { title: 'Wiki title', body: 'Wiki body' }
         expect(response).to redirect_to Wiki.last
       end
     end
 
     describe "GET edit" do
       it "returns http success" do
-        get :edit, params: {id: my_wiki.id}
+        get :edit, id: my_wiki.id # rubocop:disable HttpPositionalArguments
         expect(response).to have_http_status(:success)
       end
 
       it "renders the #edit view" do
-        get :edit, params: {id: my_wiki.id}
+        get :edit, id: my_wiki.id # rubocop:disable HttpPositionalArguments
         expect(response).to render_template :edit
       end
 
       it "assigns wiki to be updated to @wiki" do
-        get :edit, params: {id: my_wiki.id}
+        get :edit, id: my_wiki.id # rubocop:disable HttpPositionalArguments
 
         wiki_instance = assigns(:wiki)
 
@@ -177,7 +168,7 @@ RSpec.describe WikisController, type: :controller do
         new_title = Faker::Lorem.sentence
         new_body = Faker::Lorem.paragraph
 
-        put :update, id: my_wiki.id, wiki: {title: new_title, body: new_body}
+        put :update, id: my_wiki.id, wiki: { title: new_title, body: new_body }
 
         updated_wiki = assigns(:wiki)
         expect(updated_wiki.id).to eq my_wiki.id
@@ -189,20 +180,20 @@ RSpec.describe WikisController, type: :controller do
         new_title = Faker::Lorem.sentence
         new_body = Faker::Lorem.paragraph
 
-        put :update, id: my_wiki.id, wiki: {title: new_title, body: new_body}
+        put :update, id: my_wiki.id, wiki: { title: new_title, body: new_body }
         expect(response).to redirect_to my_wiki
       end
     end
 
     describe "DELETE destroy" do
       it "deletes the wiki" do
-        delete :destroy, params: {id: my_wiki.id}
+        delete :destroy, id: my_wiki.id # rubocop:disable HttpPositionalArguments
         count = Wiki.where(id: my_wiki.id).size
         expect(count).to eq 0
       end
 
       it "redirects to posts index" do
-        delete :destroy, params: {id: my_wiki.id}
+        delete :destroy, id: my_wiki.id # rubocop:disable HttpPositionalArguments
         expect(response).to redirect_to wikis_path
       end
     end
@@ -222,23 +213,23 @@ RSpec.describe WikisController, type: :controller do
 
       it "assigns Wiki.all to wiki" do
         get :index
-        expect(assigns(:wikis)).to eq(Wiki.all) #([my_wiki, my_private_wiki])
+        expect(assigns(:wikis)).to eq(Wiki.all) # ([my_wiki, my_private_wiki])
       end
     end
 
     describe "GET show" do
       it "returns http success" do
-        get :show, params: {id: my_wiki.id}
+        get :show, id: my_wiki.id # rubocop:disable HttpPositionalArguments
         expect(response).to have_http_status(:success)
       end
 
       it "renders the #show view" do
-        get :show, params: {id: my_wiki.id}
+        get :show, id: my_wiki.id # rubocop:disable HttpPositionalArguments
         expect(response).to render_template :show
       end
 
       it "assigns my_post to @post" do
-        get :show, params: {id: my_wiki.id}
+        get :show, id: my_wiki.id # rubocop:disable HttpPositionalArguments
         expect(assigns(:wiki)).to eq(my_wiki)
       end
     end
@@ -262,33 +253,33 @@ RSpec.describe WikisController, type: :controller do
 
     describe "POST create" do
       it "increases the number of Wiki by 1" do
-        expect{ post :create, wiki: {title: 'Wiki title', body: 'Wiki body'} }.to change(Wiki,:count).by(1)
+        expect { post :create, wiki: { title: 'Wiki title', body: 'Wiki body' } }.to change(Wiki, :count).by(1)
       end
 
       it "assigns the new wiki to @wiki" do
-        post :create, wiki: {title: 'Wiki title', body: 'Wiki body' }
+        post :create, wiki: { title: 'Wiki title', body: 'Wiki body' }
         expect(assigns(:wiki)).to eq Wiki.last
       end
 
       it "redirects to the new wiki" do
-        post :create, wiki: {title: 'Wiki title', body: 'Wiki body' }
+        post :create, wiki: { title: 'Wiki title', body: 'Wiki body' }
         expect(response).to redirect_to Wiki.last
       end
     end
 
     describe "GET edit" do
       it "returns http success" do
-        get :edit, params: {id: my_wiki.id}
+        get :edit, id: my_wiki.id # rubocop:disable HttpPositionalArguments
         expect(response).to have_http_status(:success)
       end
 
       it "renders the #edit view" do
-        get :edit, params: {id: my_wiki.id}
+        get :edit, id: my_wiki.id # rubocop:disable HttpPositionalArguments
         expect(response).to render_template :edit
       end
 
       it "assigns wiki to be updated to @wiki" do
-        get :edit, params: {id: my_wiki.id}
+        get :edit, id: my_wiki.id # rubocop:disable HttpPositionalArguments
 
         wiki_instance = assigns(:wiki)
 
@@ -303,7 +294,7 @@ RSpec.describe WikisController, type: :controller do
         new_title = Faker::Lorem.sentence
         new_body = Faker::Lorem.paragraph
 
-        put :update, id: my_wiki.id, wiki: {title: new_title, body: new_body}
+        put :update, id: my_wiki.id, wiki: { title: new_title, body: new_body }
 
         updated_wiki = assigns(:wiki)
         expect(updated_wiki.id).to eq my_wiki.id
@@ -315,14 +306,14 @@ RSpec.describe WikisController, type: :controller do
         new_title = Faker::Lorem.sentence
         new_body = Faker::Lorem.paragraph
 
-        put :update, id: my_wiki.id, wiki: {title: new_title, body: new_body}
+        put :update, id: my_wiki.id, wiki: { title: new_title, body: new_body }
         expect(response).to redirect_to my_wiki
       end
     end
 
     describe "DELETE destroy" do
       it "returns http redirect" do
-        delete :destroy, params: {id: my_wiki.id}
+        delete :destroy, id: my_wiki.id # rubocop:disable HttpPositionalArguments
         expect(response).to redirect_to wikis_path
       end
     end
@@ -345,23 +336,23 @@ RSpec.describe WikisController, type: :controller do
 
       it "assigns Wiki.all to wiki" do
         get :index
-        expect(assigns(:wikis)).to eq(Wiki.all) #([my_wiki, my_private_wiki])
+        expect(assigns(:wikis)).to eq(Wiki.all) # ([my_wiki, my_private_wiki])
       end
     end
 
     describe "GET show" do
       it "returns http success" do
-        get :show, params: {id: my_wiki.id}
+        get :show, id: my_wiki.id # rubocop:disable HttpPositionalArguments
         expect(response).to have_http_status(:success)
       end
 
       it "renders the #show view" do
-        get :show, params: {id: my_wiki.id}
+        get :show, id: my_wiki.id # rubocop:disable HttpPositionalArguments
         expect(response).to render_template :show
       end
 
       it "assigns my_wiki to @wiki" do
-        get :show, params: {id: my_wiki.id}
+        get :show, id: my_wiki.id # rubocop:disable HttpPositionalArguments
         expect(assigns(:wiki)).to eq(my_wiki)
       end
     end
@@ -385,33 +376,33 @@ RSpec.describe WikisController, type: :controller do
 
     describe "POST create" do
       it "increases the number of Wiki by 1" do
-        expect{ post :create, wiki: {title: 'Wiki title', body: 'Wiki body'} }.to change(Wiki,:count).by(1)
+        expect { post :create, wiki: { title: 'Wiki title', body: 'Wiki body' } }.to change(Wiki, :count).by(1)
       end
 
       it "assigns the new wiki to @wiki" do
-        post :create, wiki: {title: 'Wiki title', body: 'Wiki body' }
+        post :create, wiki: { title: 'Wiki title', body: 'Wiki body' }
         expect(assigns(:wiki)).to eq Wiki.last
       end
 
       it "redirects to the new wiki" do
-        post :create, wiki: {title: 'Wiki title', body: 'Wiki body' }
+        post :create, wiki: { title: 'Wiki title', body: 'Wiki body' }
         expect(response).to redirect_to Wiki.last
       end
     end
 
     describe "GET edit" do
       it "returns http success" do
-        get :edit, params: {id: my_wiki.id}
+        get :edit, id: my_wiki.id # rubocop:disable HttpPositionalArguments
         expect(response).to have_http_status(:success)
       end
 
       it "renders the #edit view" do
-        get :edit, params: {id: my_wiki.id}
+        get :edit, id: my_wiki.id # rubocop:disable HttpPositionalArguments
         expect(response).to render_template :edit
       end
 
       it "assigns wiki to be updated to @wiki" do
-        get :edit, params: {id: my_wiki.id}
+        get :edit, id: my_wiki.id # rubocop:disable HttpPositionalArguments
 
         wiki_instance = assigns(:wiki)
 
@@ -426,7 +417,7 @@ RSpec.describe WikisController, type: :controller do
         new_title = Faker::Lorem.sentence
         new_body = Faker::Lorem.paragraph
 
-        put :update, id: my_wiki.id, wiki: {title: new_title, body: new_body}
+        put :update, id: my_wiki.id, wiki: { title: new_title, body: new_body }
 
         updated_wiki = assigns(:wiki)
         expect(updated_wiki.id).to eq my_wiki.id
@@ -438,20 +429,14 @@ RSpec.describe WikisController, type: :controller do
         new_title = Faker::Lorem.sentence
         new_body = Faker::Lorem.paragraph
 
-        put :update, id: my_wiki.id, wiki: {title: new_title, body: new_body}
+        put :update, id: my_wiki.id, wiki: { title: new_title, body: new_body }
         expect(response).to redirect_to my_wiki
       end
     end
 
     describe "DELETE destroy" do
-      it "deletes the wiki" do
-        delete :destroy, params: {id: my_wiki.id}
-        count = Wiki.where(id: my_wiki.id).size
-        expect(count).to eq 0
-      end
-
-      it "redirects to posts index" do
-        delete :destroy, params: {id: my_wiki.id}
+      it "returns http redirect" do
+        delete :destroy, id: my_wiki.id # rubocop:disable HttpPositionalArguments
         expect(response).to redirect_to wikis_path
       end
     end
@@ -474,23 +459,23 @@ RSpec.describe WikisController, type: :controller do
 
       it "assigns Wiki.all to wiki" do
         get :index
-        expect(assigns(:wikis)).to eq(Wiki.all) #([my_wiki, my_private_wiki])
+        expect(assigns(:wikis)).to eq(Wiki.all) # ([my_wiki, my_private_wiki])
       end
     end
 
     describe "GET show" do
       it "returns http success" do
-        get :show, params: {id: my_wiki.id}
+        get :show, id: my_wiki.id # rubocop:disable HttpPositionalArguments
         expect(response).to have_http_status(:success)
       end
 
       it "renders the #show view" do
-        get :show, params: {id: my_wiki.id}
+        get :show, id: my_wiki.id # rubocop:disable HttpPositionalArguments
         expect(response).to render_template :show
       end
 
       it "assigns my_wiki to @wiki" do
-        get :show, params: {id: my_wiki.id}
+        get :show, id: my_wiki.id # rubocop:disable HttpPositionalArguments
         expect(assigns(:wiki)).to eq(my_wiki)
       end
     end
@@ -514,33 +499,33 @@ RSpec.describe WikisController, type: :controller do
 
     describe "POST create" do
       it "increases the number of Wiki by 1" do
-        expect{ post :create, wiki: {title: 'Wiki title', body: 'Wiki body'} }.to change(Wiki,:count).by(1)
+        expect { post :create, wiki: { title: 'Wiki title', body: 'Wiki body' } }.to change(Wiki, :count).by(1)
       end
 
       it "assigns the new wiki to @wiki" do
-        post :create, wiki: {title: 'Wiki title', body: 'Wiki body' }
+        post :create, wiki: { title: 'Wiki title', body: 'Wiki body' }
         expect(assigns(:wiki)).to eq Wiki.last
       end
 
       it "redirects to the new wiki" do
-        post :create, wiki: {title: 'Wiki title', body: 'Wiki body' }
+        post :create, wiki: { title: 'Wiki title', body: 'Wiki body' }
         expect(response).to redirect_to Wiki.last
       end
     end
 
     describe "GET edit" do
       it "returns http success" do
-        get :edit, params: {id: my_wiki.id}
+        get :edit, id: my_wiki.id # rubocop:disable HttpPositionalArguments
         expect(response).to have_http_status(:success)
       end
 
       it "renders the #edit view" do
-        get :edit, params: {id: my_wiki.id}
+        get :edit, id: my_wiki.id # rubocop:disable HttpPositionalArguments
         expect(response).to render_template :edit
       end
 
       it "assigns wiki to be updated to @wiki" do
-        get :edit, params: {id: my_wiki.id}
+        get :edit, id: my_wiki.id # rubocop:disable HttpPositionalArguments
 
         wiki_instance = assigns(:wiki)
 
@@ -555,7 +540,7 @@ RSpec.describe WikisController, type: :controller do
         new_title = Faker::Lorem.sentence
         new_body = Faker::Lorem.paragraph
 
-        put :update, id: my_wiki.id, wiki: {title: new_title, body: new_body}
+        put :update, id: my_wiki.id, wiki: { title: new_title, body: new_body }
 
         updated_wiki = assigns(:wiki)
         expect(updated_wiki.id).to eq my_wiki.id
@@ -567,20 +552,20 @@ RSpec.describe WikisController, type: :controller do
         new_title = Faker::Lorem.sentence
         new_body = Faker::Lorem.paragraph
 
-        put :update, id: my_wiki.id, wiki: {title: new_title, body: new_body}
+        put :update, id: my_wiki.id, wiki: { title: new_title, body: new_body }
         expect(response).to redirect_to my_wiki
       end
     end
 
     describe "DELETE destroy" do
       it "deletes the wiki" do
-        delete :destroy, params: {id: my_wiki.id}
+        delete :destroy, id: my_wiki.id # rubocop:disable HttpPositionalArguments
         count = Wiki.where(id: my_wiki.id).size
         expect(count).to eq 0
       end
 
       it "redirects to posts index" do
-        delete :destroy, params: {id: my_wiki.id}
+        delete :destroy, id: my_wiki.id # rubocop:disable HttpPositionalArguments
         expect(response).to redirect_to wikis_path
       end
     end
