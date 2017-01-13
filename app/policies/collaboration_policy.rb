@@ -35,7 +35,7 @@ class CollaborationPolicy < ApplicationPolicy
 
   def collaboration_destroy?
     user.present? && (user.admin? || user.owner_of_wiki?(wiki.wiki))
-    #user.id == wiki.user_id || user.admin?
-    #user.owner_of_wiki?(wiki) || user.admin?
+    # user.id == wiki.user_id || user.admin?
+    # user.owner_of_wiki?(wiki) || user.admin?
   end
 end

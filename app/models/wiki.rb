@@ -10,15 +10,13 @@ class Wiki < ActiveRecord::Base
 
   after_update :delete_collaborations
 
-#  scope :visible_to, -> (user) { user ? all : where(private: false) }
+  #  scope :visible_to, -> (user) { user ? all : where(private: false) }
 
   private
 
   def delete_collaborations
-    if self.private == false
-      self.collaborations.delete_all
-    end
+    return unless private == false
+
+    collaborations.delete_all
   end
-
-
 end

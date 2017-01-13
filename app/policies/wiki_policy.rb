@@ -42,7 +42,7 @@ class WikiPolicy < ApplicationPolicy
       @scope = scope
     end
 
-    def resolve
+    def resolve # rubocop:disable CyclomaticComplexity, PerceivedComplexity, Metrics/AbcSize, MethodLength
       wikis = []
       if user.present? && user.role == 'admin'
         wikis = scope.all # if the user is an admin, show them all the wikis
@@ -50,7 +50,8 @@ class WikiPolicy < ApplicationPolicy
         all_wikis = scope.all
         all_wikis.each do |wiki|
           if !wiki.private? || wiki.user == user || wiki.users.include?(user)
-            wikis << wiki # if the user is premium, only show them public wikis, or that private wikis they created, or private wikis they are a collaborator on
+            wikis << wiki # if the user is premium, only show them public wikis,
+            # or that private wikis they created, or private wikis they are a collaborator on
           end
         end
       else # this is the lowly standard user
@@ -66,13 +67,12 @@ class WikiPolicy < ApplicationPolicy
     end
   end
 
-
   private
 
   def wiki_show?
     wiki.private == false ||
-    user.owner_of_wiki?(wiki) ||
-    user.admin? ||
-    wiki.users.include?(user)
+      user.owner_of_wiki?(wiki) ||
+      user.admin? ||
+      wiki.users.include?(user)
   end
 end

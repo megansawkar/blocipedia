@@ -1,5 +1,4 @@
 class ApplicationPolicy
-
   class Scope
     attr_reader :user, :scope
 
@@ -12,7 +11,6 @@ class ApplicationPolicy
       scope
     end
   end
-
 
   attr_reader :user, :record
 
@@ -27,7 +25,7 @@ class ApplicationPolicy
   end
 
   def show?
-    scope.where(:id => record.id).exists?
+    scope.where(id: record.id).exists?
   end
 
   def create?
